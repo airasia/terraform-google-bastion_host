@@ -38,7 +38,7 @@ resource "google_compute_address" "external_ip" {
 
 module "service_account" {
   source       = "airasia/service_account/google"
-  version      = "1.1.1"
+  version      = "1.2.0"
   providers    = { google = google }
   name_suffix  = var.name_suffix
   account_id   = "bastion-host-sa"
