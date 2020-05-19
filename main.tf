@@ -19,6 +19,12 @@ locals {
   network_firewall_name = format("bastion-to-network-%s", var.name_suffix)
   google_iap_cidr       = "35.235.240.0/20" # GCloud Identity Aware Proxy Netblock - https://cloud.google.com/iap/docs/using-tcp-forwarding#before_you_begin
   all_allowed_IPs       = toset(concat(var.allowed_IPs, [local.google_iap_cidr /* see https://stackoverflow.com/a/57024714/636762 */]))
+  pre_defined_sa_roles = [
+    # enable the bastion host to write logs and metrics
+    "roles/logging.logWriter",
+    "roles/monitoring.metricWriter",
+    "roles/stackdriver.resourceMetadata.writer"
+  ]
 }
 
 resource "google_project_service" "networking_api" {
@@ -44,7 +50,7 @@ module "service_account" {
   account_id   = "bastion-host-sa"
   display_name = "BastionHost-ServiceAccount"
   description  = "Manages permissions available to the VPC Bastion Host"
-  roles        = var.sa_roles
+  roles        = toset(concat(local.pre_defined_sa_roles, var.sa_roles))
 }
 
 module "vm_instance" {
