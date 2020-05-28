@@ -17,7 +17,7 @@ locals {
   # for Firewalls ----------------------------------------------------------------------------------
   vm_firewall_name      = format("outside-to-bastion-%s", var.name_suffix)
   network_firewall_name = format("bastion-to-network-%s", var.name_suffix)
-  google_iap_cidr       = "35.235.240.0/20" # GCloud Identity Aware Proxy Netblock - https://cloud.google.com/iap/docs/using-tcp-forwarding#before_you_begin
+  google_iap_cidr       = "35.235.240.0/20" # GCloud Identity Aware Proxy Netblock - https://cloud.google.com/iap/docs/using-tcp-forwarding#preparing_your_project_for_tcp_forwarding
   all_allowed_IPs       = toset(concat(var.allowed_IPs, [local.google_iap_cidr /* see https://stackoverflow.com/a/57024714/636762 */]))
   pre_defined_sa_roles = [
     # enable the bastion host to write logs and metrics
