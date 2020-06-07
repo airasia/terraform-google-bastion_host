@@ -44,11 +44,11 @@ resource "google_compute_address" "external_ip" {
 
 module "service_account" {
   source       = "airasia/service_account/google"
-  version      = "1.2.0"
+  version      = "1.2.1"
   providers    = { google = google }
   name_suffix  = var.name_suffix
-  account_id   = "bastion-host-sa"
-  display_name = "BastionHost-ServiceAccount"
+  name         = "bastion-host"
+  display_name = "BastionHost"
   description  = "Manages permissions available to the VPC Bastion Host"
   roles        = toset(concat(local.pre_defined_sa_roles, var.sa_roles))
 }
