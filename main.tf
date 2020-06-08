@@ -46,8 +46,8 @@ module "service_account" {
   version      = "1.2.1"
   providers    = { google = google }
   name_suffix  = var.name_suffix
-  name         = "bastion-host"
-  display_name = "BastionHost"
+  name         = var.sa_name
+  display_name = var.sa_name
   description  = "Manages permissions available to the VPC Bastion Host"
   roles        = toset(concat(local.pre_defined_sa_roles, var.sa_roles))
 }
