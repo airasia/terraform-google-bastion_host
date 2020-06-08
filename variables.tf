@@ -30,6 +30,12 @@ variable "disk_image" {
 # OPTIONAL PARAMETERS
 # ----------------------------------------------------------------------------------------------------------------------
 
+variable "instance_name" {
+  description = "An arbitrary name to identify the bastion host VM instance."
+  type        = string
+  default     = "bastion-host"
+}
+
 variable "allowed_IPs" {
   description = "CIDR blocks of IP ranges that maybe allowed access to SSH into bastion host."
   type        = list(string)

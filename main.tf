@@ -9,7 +9,6 @@ provider "google" {
 
 locals {
   # for VM Instance --------------------------------------------------------------------------------
-  vm_name          = "bastion-host"
   network_zone     = format("%s-a", data.google_client_config.google_client.region)
   vm_tags          = ["bastion"]
   external_ip_name = format("bastion-external-ip-%s", var.name_suffix)
@@ -58,7 +57,7 @@ module "vm_instance" {
   version                = "1.1.1"
   providers              = { google = google }
   name_suffix            = var.name_suffix
-  name                   = local.vm_name
+  name                   = var.instance_name
   zone                   = local.network_zone
   tags                   = local.vm_tags
   boot_disk_image_source = var.disk_image
