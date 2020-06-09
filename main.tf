@@ -9,7 +9,6 @@ provider "google" {
 
 locals {
   # for VM Instance --------------------------------------------------------------------------------
-  network_zone     = format("%s-a", data.google_client_config.google_client.region)
   vm_tags          = ["bastion"]
   external_ip_name = format("bastion-external-ip-%s", var.name_suffix)
 
@@ -54,11 +53,10 @@ module "service_account" {
 
 module "vm_instance" {
   source                 = "airasia/vm_instance/google"
-  version                = "1.1.1"
+  version                = "1.1.2"
   providers              = { google = google }
   name_suffix            = var.name_suffix
   name                   = var.instance_name
-  zone                   = local.network_zone
   tags                   = local.vm_tags
   boot_disk_image_source = var.disk_image
   vpc_subnetwork         = var.vpc_subnet
