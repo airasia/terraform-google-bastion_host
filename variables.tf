@@ -36,12 +36,6 @@ variable "instance_name" {
   default     = "bastion-host"
 }
 
-variable "allowed_IPs" {
-  description = "CIDR blocks of IP ranges that maybe allowed access to SSH into bastion host."
-  type        = list(string)
-  default     = []
-}
-
 variable "user_groups" {
   description = "List of usergroup emails that maybe allowed access to login to the bastion host. For example: SSH login via CLoudSHell."
   type        = list(string)
