@@ -10,7 +10,6 @@ provider "google" {
 locals {
   # for VM Instance --------------------------------------------------------------------------------
   vm_tags          = ["bastion"]
-  external_ip_name = format("bastion-external-ip-%s", var.name_suffix)
 
   # for Firewalls ----------------------------------------------------------------------------------
   vm_firewall_name      = format("outside-to-bastion-%s", var.name_suffix)
@@ -27,16 +26,6 @@ locals {
 resource "google_project_service" "networking_api" {
   service            = "servicenetworking.googleapis.com"
   disable_on_destroy = false
-}
-
-resource "google_compute_address" "external_ip" {
-  name       = local.external_ip_name
-  region     = data.google_client_config.google_client.region
-  depends_on = [google_project_service.networking_api]
-  timeouts {
-    create = var.ip_address_timeout
-    delete = var.ip_address_timeout
-  }
 }
 
 module "service_account" {
@@ -59,7 +48,6 @@ module "vm_instance" {
   tags                   = local.vm_tags
   boot_disk_image_source = var.disk_image
   vpc_subnetwork         = var.vpc_subnet
-  static_ip              = google_compute_address.external_ip.address
   service_account_email  = module.service_account.email
 }
 
