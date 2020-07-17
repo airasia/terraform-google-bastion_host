@@ -52,7 +52,7 @@ module "service_account" {
 
 module "vm_instance" {
   source                 = "airasia/vm_instance/google"
-  version                = "1.1.2"
+  version                = "1.1.3"
   providers              = { google = google }
   name_suffix            = var.name_suffix
   name                   = var.instance_name
@@ -68,7 +68,7 @@ resource "google_compute_firewall" "outside_to_bastion_firewall" {
   network       = var.vpc_network
   source_ranges = [local.google_iap_cidr /* see https://stackoverflow.com/a/57024714/636762 */]
   target_tags   = local.vm_tags
-  depends_on    = [module.vm_instance.ip_address, google_project_service.networking_api]
+  depends_on    = [module.vm_instance.static_ip, google_project_service.networking_api]
   allow {
     protocol = "tcp"
     ports    = ["22"]
@@ -79,7 +79,7 @@ resource "google_compute_firewall" "bastion_to_network_firewall" {
   name        = local.network_firewall_name
   network     = var.vpc_network
   source_tags = local.vm_tags
-  depends_on  = [module.vm_instance.ip_address, google_project_service.networking_api]
+  depends_on  = [module.vm_instance.static_ip, google_project_service.networking_api]
   allow { protocol = "icmp" }
   allow { protocol = "tcp" }
   allow { protocol = "udp" }
