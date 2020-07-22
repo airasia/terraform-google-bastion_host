@@ -9,7 +9,7 @@ provider "google" {
 
 locals {
   # for VM Instance --------------------------------------------------------------------------------
-  vm_tags          = ["bastion"]
+  vm_tags = ["bastion"]
 
   # for Firewalls ----------------------------------------------------------------------------------
   vm_firewall_name      = format("outside-to-bastion-%s", var.name_suffix)
