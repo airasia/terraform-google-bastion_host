@@ -59,9 +59,3 @@ variable "ip_address_timeout" {
   type        = string
   default     = "5m"
 }
-
-variable "module_depends_on" {
-  description = "Create explicit dependency of this module on values from other modules(s) and/or resource(s)."
-  type        = list(string)
-  default     = []
-}
