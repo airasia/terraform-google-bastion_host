@@ -36,7 +36,7 @@ module "service_account" {
 
 module "vm_instance" {
   source                 = "airasia/vm_instance/google"
-  version                = "1.1.3"
+  version                = "2.0.0"
   providers              = { google = google }
   name_suffix            = var.name_suffix
   name                   = var.instance_name
