@@ -35,11 +35,12 @@ module "service_account" {
 
 module "vm_instance" {
   source                 = "airasia/vm_instance/google"
-  version                = "2.0.0"
+  version                = "2.1.0"
   name_suffix            = var.name_suffix
   name                   = var.instance_name
   tags                   = local.vm_tags
   boot_disk_image_source = var.disk_image
+  boot_disk_size         = var.disk_size
   vpc_subnetwork         = var.vpc_subnet
   service_account_email  = module.service_account.email
 }

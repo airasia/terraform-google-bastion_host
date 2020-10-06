@@ -36,6 +36,12 @@ variable "instance_name" {
   default     = "bastion-host"
 }
 
+variable "disk_size" {
+  description = "The size of the boot disk (in GigaBytes) to be used by the Bastion Host. Must be at least the size of the disk_image."
+  type        = number
+  default     = 10
+}
+
 variable "user_groups" {
   description = "List of usergroup emails that maybe allowed access to login to the bastion host. For example: SSH login via CLoudSHell."
   type        = list(string)
