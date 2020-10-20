@@ -19,7 +19,7 @@ resource "google_project_service" "networking_api" {
 
 module "vm_instance" {
   source                 = "airasia/vm_instance/google"
-  version                = "2.3.0"
+  version                = "2.3.1"
   name_suffix            = var.name_suffix
   instance_name          = var.instance_name
   tags                   = local.vm_tags
