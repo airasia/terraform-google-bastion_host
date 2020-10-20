@@ -10,12 +10,6 @@ locals {
   vm_firewall_name      = format("outside-to-bastion-%s", var.name_suffix)
   network_firewall_name = format("bastion-to-network-%s", var.name_suffix)
   google_iap_cidr       = "35.235.240.0/20" # GCloud Identity Aware Proxy Netblock - https://cloud.google.com/iap/docs/using-tcp-forwarding#preparing_your_project_for_tcp_forwarding
-  pre_defined_sa_roles = [
-    # enable the bastion host to write logs and metrics
-    "roles/logging.logWriter",
-    "roles/monitoring.metricWriter",
-    "roles/stackdriver.resourceMetadata.writer"
-  ]
 }
 
 resource "google_project_service" "networking_api" {
@@ -23,26 +17,18 @@ resource "google_project_service" "networking_api" {
   disable_on_destroy = false
 }
 
-module "service_account" {
-  source       = "airasia/service_account/google"
-  version      = "2.0.0"
-  name_suffix  = var.name_suffix
-  name         = var.sa_name
-  display_name = var.sa_name
-  description  = "Manages permissions available to the VPC Bastion Host"
-  roles        = toset(concat(local.pre_defined_sa_roles, var.sa_roles))
-}
-
 module "vm_instance" {
   source                 = "airasia/vm_instance/google"
-  version                = "2.1.0"
+  version                = "2.2.0"
   name_suffix            = var.name_suffix
   name                   = var.instance_name
   tags                   = local.vm_tags
   boot_disk_image_source = var.disk_image
   boot_disk_size         = var.disk_size
   vpc_subnetwork         = var.vpc_subnet
-  service_account_email  = module.service_account.email
+  sa_name                = "bastion-host"
+  sa_description         = "Manages permissions available to the VPC Bastion Host"
+  sa_roles               = var.sa_roles
 }
 
 resource "google_compute_firewall" "outside_to_bastion_firewall" {
