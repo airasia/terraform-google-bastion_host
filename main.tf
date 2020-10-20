@@ -19,14 +19,13 @@ resource "google_project_service" "networking_api" {
 
 module "vm_instance" {
   source                 = "airasia/vm_instance/google"
-  version                = "2.2.0"
+  version                = "2.3.0"
   name_suffix            = var.name_suffix
-  name                   = var.instance_name
+  instance_name          = var.instance_name
   tags                   = local.vm_tags
   boot_disk_image_source = var.disk_image
   boot_disk_size         = var.disk_size
   vpc_subnetwork         = var.vpc_subnet
-  sa_name                = "bastion-host"
   sa_description         = "Manages permissions available to the VPC Bastion Host"
   sa_roles               = var.sa_roles
 }

@@ -48,12 +48,6 @@ variable "user_groups" {
   default     = []
 }
 
-variable "sa_name" {
-  description = "An arbitrary name to identify the ServiceAccount that will be generated & attached to the bastion host VM instance."
-  type        = string
-  default     = "bastion-host"
-}
-
 variable "sa_roles" {
   description = "The IAM roles that should be granted to the ServiceAccount which is attached to the bastion host. This will enable the bastion host to access other GCP resources as permitted (or disallowed) by the IAM roles."
   type        = list(string)
