@@ -26,8 +26,8 @@ module "vm_instance" {
   boot_disk_image_source = var.disk_image
   boot_disk_size         = var.disk_size
   vpc_subnetwork         = var.vpc_subnet
-  sa_description         = "Manages permissions available to the VPC Bastion Host"
   sa_roles               = var.sa_roles
+  sa_description         = "Manages permissions available to the VPC Bastion Host"
 }
 
 resource "google_compute_firewall" "outside_to_bastion_firewall" {
