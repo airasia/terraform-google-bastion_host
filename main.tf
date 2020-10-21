@@ -19,7 +19,7 @@ resource "google_project_service" "networking_api" {
 
 module "vm_instance" {
   source                 = "airasia/vm_instance/google"
-  version                = "2.3.1"
+  version                = "2.4.0"
   name_suffix            = var.name_suffix
   instance_name          = var.instance_name
   tags                   = local.vm_tags
@@ -28,6 +28,7 @@ module "vm_instance" {
   vpc_subnetwork         = var.vpc_subnet
   sa_roles               = var.sa_roles
   sa_description         = "Manages permissions available to the VPC Bastion Host"
+  user_groups            = var.user_groups
 }
 
 resource "google_compute_firewall" "outside_to_bastion_firewall" {
@@ -50,29 +51,6 @@ resource "google_compute_firewall" "bastion_to_network_firewall" {
   allow { protocol = "icmp" }
   allow { protocol = "tcp" }
   allow { protocol = "udp" }
-}
-
-resource "google_project_iam_member" "login_role_iap_secured_tunnel_user" {
-  count      = length(var.user_groups)
-  role       = "roles/iap.tunnelResourceAccessor"
-  member     = "group:${var.user_groups[count.index]}"
-  depends_on = [google_compute_firewall.outside_to_bastion_firewall]
-}
-
-resource "google_project_iam_member" "login_role_service_account_user" {
-  count      = length(var.user_groups)
-  role       = "roles/iam.serviceAccountUser"
-  member     = "group:${var.user_groups[count.index]}"
-  depends_on = [google_compute_firewall.outside_to_bastion_firewall]
-  # see https://cloud.google.com/compute/docs/instances/managing-instance-access#configure_users
-}
-
-resource "google_project_iam_member" "login_role_compute_OS_login" {
-  count      = length(var.user_groups)
-  role       = "roles/compute.osLogin"
-  member     = "group:${var.user_groups[count.index]}"
-  depends_on = [google_compute_firewall.outside_to_bastion_firewall]
-  # see https://cloud.google.com/compute/docs/instances/managing-instance-access#configure_users
 }
 
 data "google_client_config" "google_client" {}
