@@ -22,7 +22,7 @@ variable "vpc_subnet" {
 }
 
 variable "disk_image" {
-  description = "The boot disk image to be used by the Bastion Host. Run 'gcloud compute images list' to get a list of compatible public images. Can also use custom image paths instead if preferred."
+  description = "The source image to build the bastion host's boot disk from. Can be specified by the image's self_link, projects/{project}/global/images/{image}, projects/{project}/global/images/family/{family}, global/images/{image}, global/images/family/{family}, family/{family}, {project}/{family}, {project}/{image}, {family}, or {image}. Run 'gcloud compute images list' to get a list of compatible public images. Can also use custom image paths instead."
   type        = string
 }
 
