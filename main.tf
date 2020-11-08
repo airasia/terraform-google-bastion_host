@@ -29,6 +29,7 @@ module "vm_instance" {
   sa_roles               = var.sa_roles
   sa_description         = "Manages permissions available to the VPC Bastion Host"
   login_user_groups      = var.login_user_groups
+  login_service_accounts = var.login_service_accounts
 }
 
 resource "google_compute_firewall" "outside_to_bastion_firewall" {

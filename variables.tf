@@ -48,6 +48,12 @@ variable "login_user_groups" {
   default     = []
 }
 
+variable "login_service_accounts" {
+  description = "List of ServiceAccount emails that maybe allowed access to login to the bastion host. For example: SSH login from a remote CI/CD pipeline."
+  type        = list(string)
+  default     = []
+}
+
 variable "sa_roles" {
   description = "The IAM roles that should be granted to the ServiceAccount which is attached to the bastion host. This will enable the bastion host to access other GCP resources as permitted (or disallowed) by the IAM roles."
   type        = list(string)
