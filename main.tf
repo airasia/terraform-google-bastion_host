@@ -19,7 +19,7 @@ resource "google_project_service" "networking_api" {
 
 module "vm_instance" {
   source                 = "airasia/vm_instance/google"
-  version                = "2.7.0"
+  version                = "2.8.0"
   name_suffix            = var.name_suffix
   instance_name          = var.instance_name
   tags                   = local.vm_tags
@@ -28,7 +28,7 @@ module "vm_instance" {
   vpc_subnetwork         = var.vpc_subnet
   sa_roles               = var.sa_roles
   sa_description         = "Manages permissions available to the VPC Bastion Host"
-  user_groups            = var.user_groups
+  login_user_groups      = var.login_user_groups
 }
 
 resource "google_compute_firewall" "outside_to_bastion_firewall" {

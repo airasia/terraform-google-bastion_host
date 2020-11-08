@@ -42,8 +42,8 @@ variable "disk_size" {
   default     = 10
 }
 
-variable "user_groups" {
-  description = "List of usergroup emails that maybe allowed access to login to the bastion host. For example: SSH login via CLoudSHell."
+variable "login_user_groups" {
+  description = "List of usergroup emails that maybe allowed access to login to the bastion host. For example: SSH login via CloudSHell."
   type        = list(string)
   default     = []
 }
