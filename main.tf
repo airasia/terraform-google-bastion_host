@@ -5,16 +5,6 @@ terraform {
 locals {
   # for VM Instance --------------------------------------------------------------------------------
   vm_tags = ["bastion"]
-
-  # for Firewalls ----------------------------------------------------------------------------------
-  vm_firewall_name      = format("outside-to-bastion-%s", var.name_suffix)
-  network_firewall_name = format("bastion-to-network-%s", var.name_suffix)
-  google_iap_cidr       = "35.235.240.0/20" # GCloud Identity Aware Proxy Netblock - https://cloud.google.com/iap/docs/using-tcp-forwarding#preparing_your_project_for_tcp_forwarding
-}
-
-resource "google_project_service" "networking_api" {
-  service            = "servicenetworking.googleapis.com"
-  disable_on_destroy = false
 }
 
 module "vm_instance" {
@@ -32,30 +22,3 @@ module "vm_instance" {
   login_user_groups      = var.login_user_groups
   login_service_accounts = var.login_service_accounts
 }
-
-resource "google_compute_firewall" "outside_to_bastion_firewall" {
-  name          = local.vm_firewall_name
-  network       = var.vpc_network
-  source_ranges = [local.google_iap_cidr /* see https://stackoverflow.com/a/57024714/636762 */]
-  target_tags   = local.vm_tags
-  depends_on    = [module.vm_instance, google_project_service.networking_api]
-  allow {
-    protocol = "tcp"
-    ports = [
-      # https://cloud.google.com/iap/docs/using-tcp-forwarding#create-firewall-rule
-      22,   # for SSH
-      3389, # for RDP
-    ]
-  }
-}
-
-resource "google_compute_firewall" "bastion_to_network_firewall" {
-  name        = local.network_firewall_name
-  network     = var.vpc_network
-  source_tags = local.vm_tags
-  depends_on  = [module.vm_instance, google_project_service.networking_api]
-  allow { protocol = "icmp" }
-  allow { protocol = "tcp" }
-  allow { protocol = "udp" }
-}
-
