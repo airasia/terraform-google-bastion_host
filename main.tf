@@ -58,4 +58,3 @@ resource "google_compute_firewall" "bastion_to_network_firewall" {
   allow { protocol = "udp" }
 }
 
-data "google_client_config" "google_client" {}
