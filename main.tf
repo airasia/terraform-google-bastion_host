@@ -40,7 +40,7 @@ resource "google_compute_firewall" "outside_to_bastion_firewall" {
   depends_on    = [module.vm_instance.static_ip, google_project_service.networking_api]
   allow {
     protocol = "tcp"
-    ports    = [
+    ports = [
       # https://cloud.google.com/iap/docs/using-tcp-forwarding#create-firewall-rule
       22,   # for SSH
       3389, # for RDP
