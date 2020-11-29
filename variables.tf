@@ -11,11 +11,6 @@ variable "name_suffix" {
   }
 }
 
-variable "vpc_network" {
-  description = "A VPC network (self-link) that will be hosting this bastion host"
-  type        = string
-}
-
 variable "vpc_subnet" {
   description = "A VPC subnet (self-link) that will be hosting this bastion host"
   type        = string
